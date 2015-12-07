@@ -3,6 +3,7 @@ package com.example.angel.personaltrainer;
 
 import android.app.ListFragment;
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -86,14 +87,23 @@ public class WeighInListFragment extends ListFragment {
             WeighIn w = getItem(position);
 
             ImageView photoImageView = (ImageView)convertView.findViewById(R.id.list_weighin_picture);
+            showPhoto(photoImageView, w);
 
             TextView weightTextView = (TextView)convertView.findViewById(R.id.list_weighin_weight);
-            weightTextView.setText(String.valueOf(w.getWeight()));
+            weightTextView.setText(String.valueOf(w.getWeight()) + " lbs");
 
             return convertView;
         }
+
+        private void showPhoto(ImageView v, WeighIn w){
+            Photo p = w.getPhoto();
+            BitmapDrawable b = null;
+            if (p != null) {
+                String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+                b = PictureUtils.getScaledDrawable(getActivity(), path);
+            }
+            v.setImageDrawable(b);
+        }
     }
-
-
 
 }

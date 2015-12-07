@@ -3,6 +3,7 @@ package com.example.angel.personaltrainer;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
@@ -29,6 +30,7 @@ public class WeighInFragment extends Fragment {
     private TextView mDateDisplay;
 
     public static final String EXTRA_WEIGHIN_DATE = "weigh in date";
+    private static final String DIALOG_IMAGE = "image for picture click";
     private static final int REQUEST_PHOTO = 0;
     private static final String TAG = "weigh in fragment";
 
@@ -56,6 +58,19 @@ public class WeighInFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_weighin, parent, false);
 
         mPhotoDisplay = (ImageView)v.findViewById(R.id.weighin_picture);
+        mPhotoDisplay.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Photo p = mWeighIn.getPhoto();
+                if (p == null)
+                    return;
+
+                FragmentManager fm = getActivity().getFragmentManager();
+                String path = getActivity().getFileStreamPath(p.getFilename()).getAbsolutePath();
+                ImageFragment.newInstance(path)
+                        .show(fm, DIALOG_IMAGE);
+            }
+        });
 
         mWeightDisplay = (EditText)v.findViewById(R.id.weighin_weight);
         mWeightDisplay.setText(String.valueOf(mWeighIn.getWeight()));
@@ -67,7 +82,12 @@ public class WeighInFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                mWeighIn.setWeight(Integer.parseInt(s.toString()));
+                try{
+                    mWeighIn.setWeight(Integer.parseInt(s.toString()));
+                } catch (NumberFormatException e){
+
+                }
+
             }
 
             @Override
