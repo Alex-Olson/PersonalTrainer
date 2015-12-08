@@ -8,8 +8,9 @@ import java.util.ArrayList;
 import java.util.Date;
 
 public class WeighInManager {
+    //todo: split up each clients' weigh in files
     private static final String TAG = "WeighInManager";
-    private static final String FILENAME = "weighIns.json";
+    private static final String FILENAME =  "weighIns.json";
     private ArrayList<WeighIn> mWeighIns;
     private JSONSerializer mSerializer;
 

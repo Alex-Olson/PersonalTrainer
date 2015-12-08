@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -23,6 +24,7 @@ public class ClientListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
+        mClients = new ArrayList<Client>();
         ClientAdapter adapter = new ClientAdapter(mClients);
         setListAdapter(adapter);
 
@@ -35,10 +37,28 @@ public class ClientListFragment extends ListFragment {
     }
 
     @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+
+        switch (item.getItemId()){
+            case R.id.menu_item_new_client:
+                Client c = new Client();
+
+                ClientManager.get(getActivity()).addClient(c);
+                Intent i = new Intent(getActivity(), ClientActivity.class);
+                i.putExtra(ClientFragment.EXTRA_CLIENT_ID, c.getId());
+                startActivityForResult(i, 0);
+                return true;
+
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
     public void onListItemClick(ListView l ,View v, int position, long id){
         Client c = (Client) (getListAdapter()).getItem(position);
         Intent i = new Intent(getActivity(), WeighInListActivity.class);
-        //i.putExtra(WeighInListFragment.EXTRA_CLIENT_ID, c.getId());
+        i.putExtra(WeighInListFragment.EXTRA_CLIENT_ID, c.getId());
         startActivity(i);
 
     }

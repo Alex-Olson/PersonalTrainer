@@ -3,4 +3,6 @@
     <string name="action_settings">Settings</string>
     <string name="new_weighin">New Weigh-In</string>
     <string name="new_client">New Client</string>
+    <string name="name">Name:</string>
+    <string name="email">Email:</string>
 </resources>

@@ -20,6 +20,7 @@ import java.util.ArrayList;
 
 public class WeighInListFragment extends ListFragment {
     private ArrayList<WeighIn> mWeighIns;
+    public static final String EXTRA_CLIENT_ID = "extra client id weigh in list";
 
     @Override
     public void onCreate(Bundle savedInstanceState){
