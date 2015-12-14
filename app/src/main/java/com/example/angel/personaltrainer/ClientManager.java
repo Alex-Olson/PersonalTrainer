@@ -2,6 +2,7 @@ package com.example.angel.personaltrainer;
 
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,6 +21,13 @@ public class ClientManager {
 
     private ClientManager(Context appContext){
         mContext = appContext;
+        mSerializer = new JSONSerializer(mContext, FILENAME);
+
+        try{
+            mClients = mSerializer.loadClients();
+        } catch (Exception e){
+            Log.e(TAG, "Error loading weigh-ins: ", e);
+        }
     }
 
     public static ClientManager get(Context c){
@@ -44,5 +52,16 @@ public class ClientManager {
             }
         }
         return null;
+    }
+
+    public boolean saveClients(){
+        try{
+            mSerializer.saveClients(mClients);
+            Log.d(TAG, "clients saved to file");
+            return true;
+        } catch (Exception e){
+            Log.e(TAG, "Error saving clients: ", e);
+            return false;
+        }
     }
 }

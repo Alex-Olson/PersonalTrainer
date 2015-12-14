@@ -18,22 +18,25 @@ public class ClientFragment extends Fragment {
     private Client mClient;
     private EditText mNameDisplay;
     private EditText mEmailDisplay;
+    private UUID mClientId;
 
     public static final String EXTRA_CLIENT_ID = "client fragment extra client id";
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
-        UUID id  = (UUID)getArguments().getSerializable(EXTRA_CLIENT_ID);
-        mClient = ClientManager.get(getActivity()).getClient(id);
+        mClientId  = UUID.fromString(getArguments().getSerializable(EXTRA_CLIENT_ID).toString());
+        mClient = ClientManager.get(getActivity()).getClient(mClientId);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
-        View v = inflater.inflate(R.layout.fragment_weighin, parent, false);
+        View v = inflater.inflate(R.layout.fragment_client, parent, false);
 
         mNameDisplay = (EditText)v.findViewById(R.id.client_name);
+
         mNameDisplay.setText(mClient.getName());
+
         mNameDisplay.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -54,7 +57,9 @@ public class ClientFragment extends Fragment {
 
 
         mEmailDisplay = (EditText)v.findViewById(R.id.client_email);
-        mEmailDisplay.setText(mClient.getEmail());
+
+            mEmailDisplay.setText(mClient.getEmail());
+
         mEmailDisplay.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -73,5 +78,21 @@ public class ClientFragment extends Fragment {
             }
         });
         return v;
+    }
+
+    @Override
+    public void onPause(){
+        super.onPause();
+        ClientManager.get(getActivity()).saveClients();
+    }
+
+    public static ClientFragment newInstance(UUID clientId){
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_CLIENT_ID, clientId.toString());
+
+        ClientFragment fragment = new ClientFragment();
+        fragment.setArguments(args);
+
+        return fragment;
     }
 }

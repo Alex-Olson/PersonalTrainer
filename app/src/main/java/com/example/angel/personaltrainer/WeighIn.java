@@ -5,16 +5,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class WeighIn {
 
     private static final String JSON_PHOTO = "photo";
     private static final String JSON_WEIGHT = "weight";
     private static final String JSON_DATE = "date";
+    private static final String JSON_CLIENT = "client";
 
     private Photo mPhoto;
     private int mWeight;
     private Date mDate;
+
+    public UUID getClientId() {
+        return mClientId;
+    }
+
+    public void setClientId(UUID mClientId) {
+        this.mClientId = mClientId;
+    }
+
+    private UUID mClientId;
 
     public WeighIn(){
         mDate = new Date();
@@ -28,6 +40,7 @@ public class WeighIn {
 
         }
         mWeight = json.getInt(JSON_WEIGHT);
+        mClientId = UUID.fromString(json.getString(JSON_CLIENT));
     }
 
     public JSONObject toJSON() throws JSONException{
@@ -37,6 +50,7 @@ public class WeighIn {
         json.put(JSON_DATE, mDate.getTime());
         if (mPhoto != null)
             json.put(JSON_PHOTO, mPhoto.toJSON());
+        json.put(JSON_CLIENT, mClientId.toString());
         return json;
     }
 

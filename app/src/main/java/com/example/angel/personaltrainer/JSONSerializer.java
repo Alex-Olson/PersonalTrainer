@@ -71,4 +71,50 @@ public class JSONSerializer {
                 writer.close();
         }
     }
+
+    public ArrayList<Client> loadClients() throws IOException, JSONException {
+        ArrayList<Client> clients = new ArrayList<Client>();
+        BufferedReader reader = null;
+
+        try{
+            InputStream in = mContext.openFileInput(mFilename);
+            reader = new BufferedReader(new InputStreamReader(in));
+            StringBuilder jsonString = new StringBuilder();
+            String line = null;
+            while((line = reader.readLine()) != null){
+                jsonString.append(line);
+            }
+
+            JSONArray array = (JSONArray) new JSONTokener(jsonString.toString())
+                    .nextValue();
+
+            for (int i = 0; i < array.length(); i++){
+                clients.add(new Client(array.getJSONObject(i)));
+            }
+        } catch (FileNotFoundException e) {
+
+        } finally {
+            if (reader != null)
+                reader.close();
+        }
+        return clients;
+    }
+
+    public void saveClients(ArrayList<Client> clients)
+            throws JSONException, IOException{
+        JSONArray array = new JSONArray();
+        for (Client c : clients)
+            array.put(c.toJSON());
+
+        Writer writer = null;
+        try{
+            OutputStream out = mContext
+                    .openFileOutput(mFilename, Context.MODE_PRIVATE);
+            writer = new OutputStreamWriter(out);
+            writer.write(array.toString());
+        } finally {
+            if (writer != null)
+                writer.close();
+        }
+    }
 }

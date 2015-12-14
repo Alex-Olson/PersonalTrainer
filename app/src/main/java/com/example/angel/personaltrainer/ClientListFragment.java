@@ -24,7 +24,7 @@ public class ClientListFragment extends ListFragment {
 
         setHasOptionsMenu(true);
 
-        mClients = new ArrayList<Client>();
+        mClients = ClientManager.get(getActivity()).getClients();
         ClientAdapter adapter = new ClientAdapter(mClients);
         setListAdapter(adapter);
 
@@ -45,7 +45,7 @@ public class ClientListFragment extends ListFragment {
 
                 ClientManager.get(getActivity()).addClient(c);
                 Intent i = new Intent(getActivity(), ClientActivity.class);
-                i.putExtra(ClientFragment.EXTRA_CLIENT_ID, c.getId());
+                i.putExtra(ClientFragment.EXTRA_CLIENT_ID, c.getId().toString());
                 startActivityForResult(i, 0);
                 return true;
 
@@ -58,7 +58,7 @@ public class ClientListFragment extends ListFragment {
     public void onListItemClick(ListView l ,View v, int position, long id){
         Client c = (Client) (getListAdapter()).getItem(position);
         Intent i = new Intent(getActivity(), WeighInListActivity.class);
-        i.putExtra(WeighInListFragment.EXTRA_CLIENT_ID, c.getId());
+        i.putExtra(WeighInListFragment.EXTRA_CLIENT_ID, c.getId().toString());
         startActivity(i);
 
     }

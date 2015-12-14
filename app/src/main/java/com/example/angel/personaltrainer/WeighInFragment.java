@@ -20,6 +20,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.Date;
+import java.util.UUID;
 
 public class WeighInFragment extends Fragment {
     private WeighIn mWeighIn;
@@ -28,8 +29,10 @@ public class WeighInFragment extends Fragment {
     private ImageButton mPhotoButton;
     private EditText mWeightDisplay;
     private TextView mDateDisplay;
+    public UUID clientId;
 
     public static final String EXTRA_WEIGHIN_DATE = "weigh in date";
+    public static final String EXTRA_CLIENT_ID = "weigh in fragment extra client fragment";
     private static final String DIALOG_IMAGE = "image for picture click";
     private static final int REQUEST_PHOTO = 0;
     private static final String TAG = "weigh in fragment";
@@ -38,7 +41,8 @@ public class WeighInFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         Date weighInDate = (Date)getArguments().getSerializable(EXTRA_WEIGHIN_DATE);
-        mWeighIn = WeighInManager.get(getActivity()).getWeighIn(weighInDate);
+        clientId = UUID.fromString(getArguments().getSerializable(EXTRA_CLIENT_ID).toString());
+        mWeighIn = WeighInManager.get(getActivity(), clientId).getWeighIn(weighInDate);
     }
 
     @Override
@@ -122,7 +126,7 @@ public class WeighInFragment extends Fragment {
     @Override
     public void onPause(){
         super.onPause();
-        WeighInManager.get(getActivity()).saveWeighIns();
+        WeighInManager.get(getActivity(), clientId).saveWeighIns();
     }
 
     private void showPhoto(){
@@ -134,9 +138,10 @@ public class WeighInFragment extends Fragment {
         }
         mPhotoDisplay.setImageDrawable(b);
     }
-    public static WeighInFragment newInstance(Date weighInDate){
+    public static WeighInFragment newInstance(Date weighInDate, UUID clientId){
         Bundle args = new Bundle();
         args.putSerializable(EXTRA_WEIGHIN_DATE, weighInDate);
+        args.putSerializable(EXTRA_CLIENT_ID, clientId.toString());
 
         WeighInFragment fragment = new WeighInFragment();
         fragment.setArguments(args);

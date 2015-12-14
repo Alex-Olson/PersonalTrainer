@@ -17,17 +17,20 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 public class WeighInListFragment extends ListFragment {
     private ArrayList<WeighIn> mWeighIns;
     public static final String EXTRA_CLIENT_ID = "extra client id weigh in list";
+    public UUID clientId;
 
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        clientId = UUID.fromString(getArguments().getSerializable(EXTRA_CLIENT_ID).toString());
 
         setHasOptionsMenu(true);
-        mWeighIns = WeighInManager.get(getActivity()).getWeighIns();
+        mWeighIns = WeighInManager.get(getActivity(), clientId).getWeighIns();
 
         WeighInAdapter adapter = new WeighInAdapter(mWeighIns);
         setListAdapter(adapter);
@@ -52,6 +55,7 @@ public class WeighInListFragment extends ListFragment {
         WeighIn w = (WeighIn) (getListAdapter()).getItem(position);
         Intent i = new Intent(getActivity(), WeighInActivity.class);
         i.putExtra(WeighInFragment.EXTRA_WEIGHIN_DATE, w.getDate());
+        i.putExtra(WeighInFragment.EXTRA_CLIENT_ID, w.getClientId().toString());
         startActivity(i);
 
     }
@@ -62,9 +66,11 @@ public class WeighInListFragment extends ListFragment {
         switch (item.getItemId()){
             case R.id.menu_item_new_weighin:
                 WeighIn w = new WeighIn();
-                WeighInManager.get(getActivity()).addWeighIn(w);
+                w.setClientId(clientId);
+                WeighInManager.get(getActivity(), clientId).addWeighIn(w);
                 Intent i = new Intent(getActivity(), WeighInActivity.class);
                 i.putExtra(WeighInFragment.EXTRA_WEIGHIN_DATE, w.getDate());
+                i.putExtra(WeighInFragment.EXTRA_CLIENT_ID, w.getClientId().toString());
                 startActivityForResult(i, 0);
                 return true;
 
@@ -80,20 +86,33 @@ public class WeighInListFragment extends ListFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent){
-            if (convertView == null){
-                convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_weighin, null);
-            }
+        public View getView(int position, View convertView, ViewGroup parent) {
 
-            WeighIn w = getItem(position);
 
-            ImageView photoImageView = (ImageView)convertView.findViewById(R.id.list_weighin_picture);
-            showPhoto(photoImageView, w);
+                if (convertView == null) {
 
-            TextView weightTextView = (TextView)convertView.findViewById(R.id.list_weighin_weight);
-            weightTextView.setText(String.valueOf(w.getWeight()) + " lbs");
 
-            return convertView;
+                    if (getItem(position).getClientId().equals(clientId)) {
+                        convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_weighin, null);
+                        WeighIn w = getItem(position);
+
+                        ImageView photoImageView = (ImageView) convertView.findViewById(R.id.list_weighin_picture);
+                        showPhoto(photoImageView, w);
+
+                        TextView weightTextView = (TextView) convertView.findViewById(R.id.list_weighin_weight);
+                        weightTextView.setText(String.valueOf(w.getWeight()) + " lbs");
+
+                        TextView dateTextView = (TextView) convertView.findViewById(R.id.list_weighin_date);
+                        dateTextView.setText(w.getDate().toString());
+
+                    } else {
+                        convertView = getActivity().getLayoutInflater().inflate(R.layout.list_item_blank, null);
+                    }
+                }
+
+
+                return convertView;
+
         }
 
         private void showPhoto(ImageView v, WeighIn w){
@@ -107,4 +126,14 @@ public class WeighInListFragment extends ListFragment {
         }
     }
 
+
+    public static WeighInListFragment newInstance(UUID clientId){
+        Bundle args = new Bundle();
+        args.putSerializable(EXTRA_CLIENT_ID, clientId.toString());
+
+        WeighInListFragment fragment = new WeighInListFragment();
+        fragment.setArguments(args);
+
+        return fragment;
+    }
 }

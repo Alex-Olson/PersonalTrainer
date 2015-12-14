@@ -18,7 +18,7 @@ public class Client {
     private UUID mId;
     private String mName;
     private String mEmail;
-    private ArrayList<WeighIn> mWeighIns;
+
 
     public Client(){
         mId = UUID.randomUUID();
@@ -60,15 +60,4 @@ public class Client {
         this.mEmail = s;
     }
 
-    public ArrayList<WeighIn> getWeighIns() {
-        return mWeighIns;
-    }
-
-    public void setWeighIns(ArrayList<WeighIn> a) {
-        this.mWeighIns = a;
-    }
-
-    public void addWeighIn(WeighIn w){
-        mWeighIns.add(w);
-    }
 }

@@ -2,20 +2,14 @@ package com.example.angel.personaltrainer;
 
 
 import android.app.Fragment;
-import android.view.MenuItem;
+import java.util.UUID;
 
 public class WeighInListActivity extends SingleFragmentActivity {
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
 
-        int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
     @Override
-    protected Fragment createFragment(){
-        return new WeighInListFragment();
+    protected Fragment createFragment() {
+        UUID clientId = UUID.fromString(getIntent().getSerializableExtra(WeighInListFragment.EXTRA_CLIENT_ID).toString());
+
+        return WeighInListFragment.newInstance(clientId);
     }
 }

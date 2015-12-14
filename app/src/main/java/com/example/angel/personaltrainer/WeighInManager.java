@@ -6,22 +6,25 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 public class WeighInManager {
     //todo: split up each clients' weigh in files
     private static final String TAG = "WeighInManager";
-    private static final String FILENAME =  "weighIns.json";
+    private static String mFilename;
     private ArrayList<WeighIn> mWeighIns;
     private JSONSerializer mSerializer;
 
     private static WeighInManager sWeighInManager;
     private Context mContext;
+    private static UUID currentId;
 
 
-    private WeighInManager(Context appContext){
+    private WeighInManager(Context appContext, UUID clientId){
+
         mContext = appContext;
 
-        mSerializer = new JSONSerializer(mContext, FILENAME);
+        mSerializer = new JSONSerializer(mContext, mFilename);
 
         try{
             mWeighIns = mSerializer.loadWeighIns();
@@ -30,10 +33,13 @@ public class WeighInManager {
         }
     }
 
-    public static WeighInManager get(Context c){
-        if (sWeighInManager == null){
-            sWeighInManager = new WeighInManager(c.getApplicationContext());
+    public static WeighInManager get(Context c, UUID clientId){
+        mFilename = clientId.toString() + "weighIns.json";
+
+       if (sWeighInManager == null){
+            sWeighInManager = new WeighInManager(c.getApplicationContext(), clientId);
         }
+
         return sWeighInManager;
     }
 
