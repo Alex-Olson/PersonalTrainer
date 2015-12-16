@@ -5,10 +5,11 @@ import android.content.Context;
 import android.util.Log;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.UUID;
 
-public class ClientManager {
+public class ClientManager
+//singleton for clients.
+{
 
     //todo: split up json files for each client
     private static final String TAG = "ClientManager";

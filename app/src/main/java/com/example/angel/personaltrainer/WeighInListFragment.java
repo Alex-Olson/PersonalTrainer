@@ -21,7 +21,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class WeighInListFragment extends ListFragment {
+public class WeighInListFragment extends ListFragment
+//displays weigh-in date/weight/photo thumbnail, and allows you to edit/delete them. small glitch in
+    //deleting them; the listview doesn't populate correctly on deletion but it fixed after exiting and reentering listview. probably has something
+    //to do with how i had to use the adapter to only display only the weigh-ins of the certain client.
+{
     private ArrayList<WeighIn> mWeighIns;
     public static final String EXTRA_CLIENT_ID = "extra client id weigh in list";
     public UUID clientId;
@@ -117,7 +121,10 @@ public class WeighInListFragment extends ListFragment {
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
+        public View getView(int position, View convertView, ViewGroup parent)
+        //In order to fix the problem I described in the WeighInManager, I inflated a completely blank view
+                //for each object in the json file that didnt match the client id of the client. Probably introduced the bug I mentioned above.
+        {
 
 
                 if (convertView == null) {

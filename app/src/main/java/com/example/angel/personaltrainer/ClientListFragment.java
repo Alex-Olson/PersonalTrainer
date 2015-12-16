@@ -18,7 +18,9 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ClientListFragment extends ListFragment {
+public class ClientListFragment extends ListFragment
+//display/add/edit/remove clients.
+{
     private ArrayList<Client> mClients;
 
     @Override

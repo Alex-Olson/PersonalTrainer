@@ -9,6 +9,8 @@ import android.view.Display;
 import android.widget.ImageView;
 
 public class PictureUtils {
+    //used to have a viewable bitmap for use in the listview and preview of the weigh in fragment. basically taken from the BNR books' photo
+    //chapters.
 
     @SuppressWarnings("deprecation")
     public static BitmapDrawable getScaledDrawable(Activity a, String path){

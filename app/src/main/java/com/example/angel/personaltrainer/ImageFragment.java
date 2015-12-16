@@ -9,7 +9,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-public class ImageFragment extends DialogFragment {
+public class ImageFragment extends DialogFragment
+//displays full image of selected bitmap.
+{
     public static final String EXTRA_IMAGE_PATH = "personal trainer image path";
 
     public static ImageFragment newInstance(String imagePath){

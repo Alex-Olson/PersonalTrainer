@@ -9,12 +9,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 
-import java.util.Date;
 import java.util.UUID;
 
-public class ClientFragment extends Fragment {
+public class ClientFragment extends Fragment
+//edit client data.
+{
     private Client mClient;
     private EditText mNameDisplay;
     private EditText mEmailDisplay;

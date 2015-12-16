@@ -11,7 +11,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,9 +25,11 @@ import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
-public class WeighInFragment extends Fragment {
+public class WeighInFragment extends Fragment
+//Edit data about the weigh-in. pretty straightforward. can take a picture, save it + send it using the email of the client.
+{
     private WeighIn mWeighIn;
-    private Photo mPhoto;
+
     private ImageView mPhotoDisplay;
     private ImageButton mPhotoButton;
     private EditText mWeightDisplay;

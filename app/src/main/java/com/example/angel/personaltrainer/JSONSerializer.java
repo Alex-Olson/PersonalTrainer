@@ -17,7 +17,9 @@ import java.io.OutputStreamWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 
-public class JSONSerializer {
+public class JSONSerializer
+//saves clients/weigh-ins to json file.
+{
     private Context mContext;
     private String mFilename;
 

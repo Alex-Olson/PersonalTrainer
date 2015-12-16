@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-public class CameraFragment extends Fragment {
+public class CameraFragment extends Fragment
+//creates a live preview of a picture and takes it + saves it to apps data file. taken from BNR photo chapters.
+{
     private static final String TAG = "personal trainer camera";
     public static final String EXTRA_PHOTO_FILENAME = "weigh in photo filename";
 

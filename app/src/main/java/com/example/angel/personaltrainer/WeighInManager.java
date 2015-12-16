@@ -8,9 +8,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
-public class WeighInManager {
-    //todo: split up each clients' weigh in files
+public class WeighInManager
+// singleton for managing weighins
+{
+
     private static final String TAG = "WeighInManager";
+    //I tried to split up the json files for weigh-ins by client by setting the file name to the UUID of the client, but it still always returns the
+    //one json file. I circumvented that in the adapter view but left the code here to prevent anything from exploding this close to the
+    //deadline.
     private static String mFilename;
     private ArrayList<WeighIn> mWeighIns;
     private JSONSerializer mSerializer;
