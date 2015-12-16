@@ -4,11 +4,14 @@ package com.example.angel.personaltrainer;
 import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -37,6 +40,36 @@ public class ClientListFragment extends ListFragment {
     }
 
     @Override
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int position = info.position;
+        ClientAdapter adapter = (ClientAdapter)getListAdapter();
+        Client client = adapter.getItem(position);
+
+        switch (item.getItemId()){
+            case R.id.menu_item_delete_client:
+                ClientManager.get(getActivity()).deleteClient(client);
+                adapter.notifyDataSetChanged();
+                return true;
+
+            case R.id.menu_item_edit_client:
+                Intent i = new Intent(getActivity(), ClientActivity.class);
+                i.putExtra(ClientFragment.EXTRA_CLIENT_ID, client.getId().toString());
+                startActivityForResult(i, 0);
+                return true;
+        }
+        return  super.onContextItemSelected(item);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+        ListView listview = (ListView)v.findViewById(android.R.id.list);
+        registerForContextMenu(listview);
+        return v;
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
         switch (item.getItemId()){
@@ -52,6 +85,11 @@ public class ClientListFragment extends ListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        getActivity().getMenuInflater().inflate(R.menu.client_list_item_context, menu);
     }
 
     @Override

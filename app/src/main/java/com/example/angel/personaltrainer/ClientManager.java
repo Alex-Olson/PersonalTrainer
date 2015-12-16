@@ -43,6 +43,12 @@ public class ClientManager {
 
     public void addClient(Client c){
         mClients.add(c);
+        saveClients();
+    }
+
+    public void deleteClient(Client c){
+        mClients.remove(c);
+        saveClients();
     }
 
     public Client getClient(UUID id){

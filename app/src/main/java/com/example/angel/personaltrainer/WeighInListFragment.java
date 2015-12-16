@@ -5,12 +5,14 @@ import android.app.ListFragment;
 import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -61,6 +63,11 @@ public class WeighInListFragment extends ListFragment {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
+        getActivity().getMenuInflater().inflate(R.menu.weighin_list_item_context, menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item){
 
         switch (item.getItemId()){
@@ -77,6 +84,30 @@ public class WeighInListFragment extends ListFragment {
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item){
+        AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo)item.getMenuInfo();
+        int position = info.position;
+        WeighInAdapter adapter = (WeighInAdapter)getListAdapter();
+        WeighIn weighIn = adapter.getItem(position);
+
+        switch (item.getItemId()){
+            case R.id.menu_item_delete_weighin:
+                WeighInManager.get(getActivity(), clientId).deleteWeighIn(weighIn);
+                adapter.notifyDataSetChanged();
+                return true;
+        }
+        return  super.onContextItemSelected(item);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState){
+        View v = super.onCreateView(inflater, parent, savedInstanceState);
+        ListView listview = (ListView)v.findViewById(android.R.id.list);
+        registerForContextMenu(listview);
+        return v;
     }
 
     private class WeighInAdapter extends ArrayAdapter<WeighIn>{

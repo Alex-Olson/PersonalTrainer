@@ -45,6 +45,12 @@ public class WeighInManager {
 
     public void addWeighIn(WeighIn w){
         mWeighIns.add(w);
+        saveWeighIns();
+    }
+
+    public void deleteWeighIn(WeighIn w){
+        mWeighIns.remove(w);
+        saveWeighIns();
     }
 
     public boolean saveWeighIns(){

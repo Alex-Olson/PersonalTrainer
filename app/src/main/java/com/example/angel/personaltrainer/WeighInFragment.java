@@ -130,7 +130,7 @@ public class WeighInFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(android.content.Intent.ACTION_SEND);
-                i.putExtra(Intent.EXTRA_EMAIL, mClient.getEmail());
+                i.putExtra(Intent.EXTRA_EMAIL, new String[]{mClient.getEmail()});
                 i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getActivity().getFileStreamPath(mWeighIn.getPhoto().getFilename()).getPath())));
                 i.setType("image/jpg");
                 startActivity(i);

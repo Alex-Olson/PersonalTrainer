@@ -7,4 +7,8 @@
     <string name="email">Email:</string>
     <string name="weight">Weight (in lbs.):</string>
     <string name="send_picture">Send Picture in Email</string>
+    <string name="delete_client">Delete Client</string>
+    <string name="delete_weighin">Delete Weigh-in</string>
+    <string name="edit_client">Edit Client</string>
+    <string name="take_picture">Snap</string>
 </resources>
