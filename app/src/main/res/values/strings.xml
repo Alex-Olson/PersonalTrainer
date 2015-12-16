@@ -5,4 +5,6 @@
     <string name="new_client">New Client</string>
     <string name="name">Name:</string>
     <string name="email">Email:</string>
+    <string name="weight">Weight (in lbs.):</string>
+    <string name="send_picture">Send Picture in Email</string>
 </resources>

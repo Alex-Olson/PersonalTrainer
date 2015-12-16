@@ -7,6 +7,7 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.drawable.BitmapDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -14,11 +15,13 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.io.File;
 import java.util.Date;
 import java.util.UUID;
 
@@ -30,6 +33,8 @@ public class WeighInFragment extends Fragment {
     private EditText mWeightDisplay;
     private TextView mDateDisplay;
     public UUID clientId;
+    private Button mSendPictureButton;
+    private Client mClient;
 
     public static final String EXTRA_WEIGHIN_DATE = "weigh in date";
     public static final String EXTRA_CLIENT_ID = "weigh in fragment extra client fragment";
@@ -42,6 +47,7 @@ public class WeighInFragment extends Fragment {
         super.onCreate(savedInstanceState);
         Date weighInDate = (Date)getArguments().getSerializable(EXTRA_WEIGHIN_DATE);
         clientId = UUID.fromString(getArguments().getSerializable(EXTRA_CLIENT_ID).toString());
+        mClient = ClientManager.get(getActivity()).getClient(clientId);
         mWeighIn = WeighInManager.get(getActivity(), clientId).getWeighIn(weighInDate);
     }
 
@@ -118,6 +124,18 @@ public class WeighInFragment extends Fragment {
         if (!hasACamera){
             mPhotoButton.setEnabled(false);
         }
+
+        mSendPictureButton = (Button)v.findViewById(R.id.send_email_button);
+        mSendPictureButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(android.content.Intent.ACTION_SEND);
+                i.putExtra(Intent.EXTRA_EMAIL, mClient.getEmail());
+                i.putExtra(Intent.EXTRA_STREAM, Uri.fromFile(new File(getActivity().getFileStreamPath(mWeighIn.getPhoto().getFilename()).getPath())));
+                i.setType("image/jpg");
+                startActivity(i);
+            }
+        });
 
         //return view
         return v;

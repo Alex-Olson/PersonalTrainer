@@ -5,13 +5,14 @@
     <TextView
         android:id="@+id/list_client_name"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textSize="25dp"/>
 
     <TextView
         android:id="@+id/list_client_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/list_client_name"
-        />
+        android:textSize="25dp"/>
 
 </RelativeLayout>

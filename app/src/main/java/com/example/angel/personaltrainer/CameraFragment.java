@@ -133,7 +133,7 @@ public class CameraFragment extends Fragment {
           boolean success = true;
 
           try{
-              os = getActivity().openFileOutput(filename, Context.MODE_PRIVATE);
+              os = getActivity().openFileOutput(filename, Context.MODE_WORLD_READABLE);
               os.write(data);
           } catch (Exception e){
               Log.e(TAG, "Error writing to file " + filename, e);
